@@ -2,6 +2,9 @@ const express = require('express');
 const app = express(); 
 const bodyParser = require('body-parser');
 const config = require('config');
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+const taskRoutes = require('./routes/tasks');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -13,9 +16,19 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get('/test', function(req, res) {
-	res.json({success: true});
-});
+async function dbConnect() {
+	try {
+	    await mongoose.connect(config.get('DB_HOST'), config.get('DB_OPTIONS'));
+	} catch(error) {
+		console.log(errorLog('UNABLE TO CONNECT WITH MONGODB!'));
+	    console.log(errorLog('ERROR: ' + error));
+	    process.exit(0);
+	}
+}
+
+dbConnect();
+
+app.get('/api/tasks', taskRoutes.getTasks);
 
 app.listen(config.get('PORT'), function() {
 	console.log('API MYTODO-LIST server listening on port: ' + config.get('PORT'));

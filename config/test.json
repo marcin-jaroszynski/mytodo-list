@@ -1,0 +1,5 @@
+{
+	"PORT": 3001,
+	"DB_HOST": "mongodb://localhost/testMyTodoList",
+  	"DB_OPTIONS": { }
+}

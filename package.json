@@ -8,7 +8,9 @@
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "server-start": "NODE_ENV=prod node server/server.js",
+    "test-api": "jasmine server/test/api/*.spec.js"
   },
   "private": true,
   "dependencies": {
@@ -32,7 +34,9 @@
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
     "@types/node": "~6.0.60",
+    "body-parser": "^1.18.3",
     "codelyzer": "^4.0.1",
+    "express": "^4.16.3",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~2.0.0",
@@ -40,9 +44,14 @@
     "karma-coverage-istanbul-reporter": "^1.2.1",
     "karma-jasmine": "~1.1.0",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "protractor": "~5.1.2",
+    "mongoose": "^5.1.7",
+    "protractor": "^5.3.2",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
-    "typescript": "~2.5.3"
+    "typescript": "~2.5.3",
+    "config": "^1.29.0",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^7.1.1",
+    "chai-http": "^3.0.0"
   }
 }
