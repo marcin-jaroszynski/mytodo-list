@@ -29,6 +29,7 @@ async function dbConnect() {
 dbConnect();
 
 app.get('/api/tasks', taskRoutes.getTasks);
+app.post('/api/task/add', taskRoutes.add);
 
 app.listen(config.get('PORT'), function() {
 	console.log('API MYTODO-LIST server listening on port: ' + config.get('PORT'));

@@ -21,16 +21,32 @@ describe('API: Task', () => {
           });
     });
 
-  it('Add task', (done) => {
-      let params = { title: 'New Task' };
-      chai.request(server)
-          .post('/api/task/add')
-          .send('params')
-          .end((err, res) => { 
-            res.should.have.status(200);
-            res.body.should.be.a('object');
-            res.body.should.have.property('success').which.is.eql(true);
-            done();
-          });
-  });
+    describe('Add Task', () => { 
+      it('Should add task', (done) => {
+          let params = { title: 'New Task' };
+          chai.request(server)
+              .post('/api/task/add')
+              .send(params)
+              .end((err, res) => { 
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.should.have.property('success').which.is.eql(true);
+                res.body.should.have.property('task').which.is.not.empty;
+                done();
+              });
+      });
+
+      it('Should fail if title is not send', (done) => {
+          let params = {};
+          chai.request(server)
+                .post('/api/task/add')
+                .send(params)
+                .end((err, res) => { 
+                  res.should.have.status(200);
+                  res.body.should.be.a('object');
+                  res.body.should.have.property('success').which.is.eql(false);
+                  done();
+                });
+      });
+    });
 });
