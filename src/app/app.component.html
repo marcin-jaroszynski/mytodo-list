@@ -1,21 +1,17 @@
 <div class="app">
   <h1>MyTodo List</h1>
   <div>
-    <input type="text" class="task-input" placeholder="Type task and click Enter to add">
+    <input [(ngModel)]="titleTask" (keyup.enter)="addTask()" type="text" class="task-input" placeholder="Type task and click Enter to add">
   </div>
   <ul class="tasks-list">
-    <li class="task">
-      <div class="task__created-date">Created at: 24.06.2018</div>
-      <div class="task__message">Task 1</div>
-      <div>
+    <li *ngFor="let task of tasks" [ngClass]="{'task--done': task.isFinished()}" class="task">
+      <div class="task__created-date">Created at: {{task.date_created}}</div>
+      <div class="task__message">{{task.title}}</div>
+      <div [hidden]="task.isFinished()">
         <button class="button">Done</button>
       </div>
-    </li>
-    <li class="task task--done">
-      <div class="task__created-date">Created at: 23.06.2018</div>
-      <div class="task__message">Task 2</div>
-      <div class="task__done-date">
-        Done at: 23.06.2018
+      <div [hidden]="!task.isFinished()" class="task__done-date">
+        Done at: {{task.date_finished}}
       </div>
     </li>
   </ul>

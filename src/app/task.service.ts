@@ -5,6 +5,13 @@ import { of } from 'rxjs/observable/of';
 import 'rxjs/add/operator/map';
 import { Task } from './task';
 
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json'
+    // 'Authorization': 'Access-Control-Allow-Headers'
+  })
+}
+
 @Injectable()
 export class TaskService {
 
@@ -12,5 +19,9 @@ export class TaskService {
 
   getList() {
   	return this.http.get('/api/tasks');
+  }
+
+  addTask(title) {
+  	return this.http.post('/api/task/add', { title: title }, httpOptions);
   }
 }
