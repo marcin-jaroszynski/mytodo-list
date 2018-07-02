@@ -8,7 +8,7 @@
       <div class="task__created-date">Created at: {{task.date_created}}</div>
       <div class="task__message">{{task.title}}</div>
       <div [hidden]="task.isFinished()">
-        <button class="button">Done</button>
+        <button class="button" (click)="markTaskAsFinished(task.id)">Done</button>
       </div>
       <div [hidden]="!task.isFinished()" class="task__done-date">
         Done at: {{task.date_finished}}

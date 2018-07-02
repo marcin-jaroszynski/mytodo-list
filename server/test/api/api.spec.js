@@ -49,4 +49,25 @@ describe('API: Task', () => {
                 });
       });
     });
+
+    describe('Mark task as finished', () => {
+      let addedTask = '';
+      beforeEach(async () => {
+        addedTask = new TaskSchema({ title: 'Task 1' });
+        await addedTask.save();
+      });
+      it('Should mark task as finished', (done) => {
+        let params = { id: addedTask.id };
+        chai.request(server)
+                .post('/api/task/finished')
+                .send(params)
+                .end((err, res) => { 
+                  res.should.have.status(200);
+                  res.body.should.be.a('object');
+                  res.body.should.have.property('success').which.is.eql(true);
+                  res.body.should.have.property('finished_date').which.is.not.empty;
+                  done();
+                });
+      });
+    });
 });

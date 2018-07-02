@@ -33,7 +33,6 @@ export class AppComponent {
   addTask(): void {
   	if (this.titleTask) {
   		this.taskService.addTask(this.titleTask).subscribe(response => {
-  			console.log('addTask.response: ', response);
   			if (true === response['success']) {
   				let newTask = new Task.Builder()
 		  							  .setId(response['task']._id)
@@ -46,6 +45,22 @@ export class AppComponent {
   			}
   		});
   	}
+  }
+
+  markTaskAsFinished(id): void {
+    console.log('AppComponent.markTaskAsFinished.id: ', id);
+    this.taskService.markAsFinished(id).subscribe(response => {
+      console.log('AppComponent.markTaskAsFinished.response: ', response);
+      if (true === response['success']) {
+        for (let i = 0; i < this.tasks.length; i++) {
+          if (id == this.tasks[i].id) {
+            this.tasks[i].date_finished = response['finished_date'];
+            this.tasks[i].status = 'finished';
+            break;
+          }
+        }
+      }
+    });
   }
 
   ngOnInit() {

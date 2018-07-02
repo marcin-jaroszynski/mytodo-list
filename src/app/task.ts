@@ -10,6 +10,7 @@ export class Task {
 		this.id = task.id;
 		this.title = task.title;
 		this.date_created = task.date_created;
+		this.status = task.status;
 	}
 
 	isFinished(): boolean {

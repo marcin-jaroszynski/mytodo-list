@@ -8,7 +8,6 @@ import { Task } from './task';
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
-    // 'Authorization': 'Access-Control-Allow-Headers'
   })
 }
 
@@ -23,5 +22,9 @@ export class TaskService {
 
   addTask(title) {
   	return this.http.post('/api/task/add', { title: title }, httpOptions);
+  }
+
+  markAsFinished(id) {
+    return this.http.post('/api/task/finished', { id: id }, httpOptions);
   }
 }
