@@ -18,8 +18,8 @@ taskSchema.static('tasks', async function() {
 });
 
 taskSchema.static('markAsFinished', async function(id) {
-	let finishedDate = Date.now();
-	await this.update({_id: id}, { $set: { status: TaskStatus.FINISHED, finished_date: finishedDate } });
+	let finishedDate = new Date();
+	let result = await this.update({_id: id}, { $set: { status: TaskStatus.FINISHED, finished_date: finishedDate } });
 	return finishedDate;
 });
 

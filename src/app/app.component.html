@@ -4,7 +4,7 @@
     <input [(ngModel)]="titleTask" (keyup.enter)="addTask()" type="text" class="task-input" placeholder="Type task and click Enter to add">
   </div>
   <ul class="tasks-list">
-    <li *ngFor="let task of tasks" [ngClass]="{'task--done': task.isFinished()}" class="task">
+    <li *ngFor="let task of tasks.slice().reverse()" [ngClass]="{'task--done': task.isFinished()}" class="task">
       <div class="task__created-date">Created at: {{task.date_created}}</div>
       <div class="task__message">{{task.title}}</div>
       <div [hidden]="task.isFinished()">

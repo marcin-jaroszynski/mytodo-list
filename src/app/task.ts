@@ -10,6 +10,7 @@ export class Task {
 		this.id = task.id;
 		this.title = task.title;
 		this.date_created = task.date_created;
+		this.date_finished = task.date_finished;
 		this.status = task.status;
 	}
 
@@ -23,6 +24,7 @@ export class Task {
 			title: string;
 			status: string;
 			date_created: Date;
+			date_finished: Date;
 
 			setId(id) {
 				this.id = id;
@@ -36,6 +38,11 @@ export class Task {
 
 			setDateCreated(dateCreated) {
 				this.date_created = dateCreated;
+				return this;
+			}
+
+			setDateFinished(dateFinished) {
+				this.date_finished = dateFinished;
 				return this;
 			}
 

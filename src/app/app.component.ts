@@ -22,7 +22,8 @@ export class AppComponent {
 		  							  .setId(response['tasks'][i]._id)
 		  							  .setTitle(response['tasks'][i].title)
 		  							  .setStatus(response['tasks'][i].status)
-		  							  .setDateCreated(response['tasks'][i].created_date)
+                      .setDateCreated(response['tasks'][i].created_date)
+		  							  .setDateFinished(response['tasks'][i].finished_date)
 		  							  .build();
 		  		this.tasks.push(newTask);
 		  	}
