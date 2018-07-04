@@ -63,3 +63,11 @@
 .task--done .task__message {
 	text-decoration: line-through;
 }
+
+.hide {
+  display: none;
+}
+
+.task__title-input--hidden {
+  display: none;
+}

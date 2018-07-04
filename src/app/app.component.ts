@@ -10,6 +10,7 @@ import { Task } from './task';
 export class AppComponent {
   title = 'app';
   tasks: Task[];
+  mode: string;
   @Input() titleTask: string;
 
   constructor(private taskService: TaskService) {}
@@ -64,8 +65,22 @@ export class AppComponent {
     });
   }
 
+  editMode(): void {
+    this.mode = 'edit';
+  }
+
+  edit(newTitle): void {
+    console.log('New Title: ', newTitle);
+    this.mode = "read";
+  }
+
+  isReadMode(): boolean {
+    return this.mode == 'read' ? true : false;
+  }
+
   ngOnInit() {
   	this.tasks = [];
+    this.mode = 'read';
   	this.getTasks();
   }
 }
