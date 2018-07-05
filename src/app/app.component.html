@@ -4,16 +4,8 @@
     <input [(ngModel)]="titleTask" (keyup.enter)="addTask()" type="text" class="task-input" placeholder="Type task and click Enter to add">
   </div>
   <ul class="tasks-list">
-    <li *ngFor="let task of tasks.slice().reverse()" [ngClass]="{'task--done': task.isFinished()}" class="task">
-      <div class="task__created-date">Created at: {{task.date_created}}</div>
-      <div *ngIf="isReadMode()" class="task__message" (click)="editMode()">{{task.title}}</div>
-      <div *ngIf="!isReadMode()" class="task__title-input"><input #taskTitle (keyup.enter)="edit(taskTitle.value)" type="text" value="{{task.title}}" /></div>
-      <div [hidden]="task.isFinished()">
-        <button class="button" (click)="markTaskAsFinished(task.id)">Done</button>
-      </div>
-      <div [hidden]="!task.isFinished()" class="task__done-date">
-        Done at: {{task.date_finished}}
-      </div>
+    <li *ngFor="let task of tasks.slice().reverse()">
+      <app-task [task]="task" (event)="markTaskAsFinished($event)"></app-task>
     </li>
   </ul>
 </div>

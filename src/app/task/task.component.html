@@ -1,0 +1,11 @@
+<div [ngClass]="{'task--done': task.isFinished()}" class="task">
+	<div class="task__created-date">Created at: {{task.date_created}}</div>
+	<div *ngIf="isReadMode()" class="task__message" (click)="editMode()">{{task.title}}</div>
+	<div *ngIf="!isReadMode()" class="task__title-input"><input #taskTitle (keyup.enter)="edit(taskTitle.value)" type="text" value="{{task.title}}" /></div>
+	<div [hidden]="task.isFinished()">
+	<button class="button" (click)="markTaskAsFinished()">Done</button>
+	</div>
+	<div [hidden]="!task.isFinished()" class="task__done-date">
+	Done at: {{task.date_finished}}
+	</div>
+</div>
