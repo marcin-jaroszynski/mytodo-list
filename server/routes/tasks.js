@@ -41,4 +41,37 @@ async function finished(req, res) {
     }
 }
 
-module.exports = { getTasks, add, finished };
+async function edit(req, res) {
+    let response = {success: false};
+    let title = '';
+    if (req.body.title) {
+        title = req.body.title;
+        title = title.trim();
+    }
+    if (!title || !req.body.id) {
+        return res.json(response);    
+    }
+    try {
+        await TaskSchema.findOneAndUpdate({_id: req.body.id}, {title: title});
+        response.success = true;
+        return res.json(response);
+    } catch(error) {
+        return res.json(response);
+    }
+}
+
+async function remove(req, res) {
+    let response = {success: false};
+    if (!req.body.id) {
+        return res.json(response);    
+    }
+    try {
+        await TaskSchema.remove({_id: req.body.id});
+        response.success = true;
+        return res.json(response);
+    } catch(error) {
+        return res.json(response);
+    }
+}
+
+module.exports = { getTasks, add, finished, edit, remove };

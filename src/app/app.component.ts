@@ -48,10 +48,8 @@ export class AppComponent {
   	}
   }
 
-  markTaskAsFinished(id): void {
-    console.log('AppComponent.markTaskAsFinished.id: ', id);
+  markTaskAsFinished(id: string): void {
     this.taskService.markAsFinished(id).subscribe(response => {
-      console.log('AppComponent.markTaskAsFinished.response: ', response);
       if (true === response['success']) {
         for (let i = 0; i < this.tasks.length; i++) {
           if (id == this.tasks[i].id) {
@@ -63,6 +61,20 @@ export class AppComponent {
       }
     });
   }
+
+  removeTask(id: string): void {
+    this.taskService.removeTask(id).subscribe(response => {
+      if (true === response['success']) {
+        for (let i = 0; i < this.tasks.length; i++) {
+          if (id == this.tasks[i].id) {
+            this.tasks.splice(i, 1);
+            break;
+          }
+        }
+      }
+    });
+  }
+
   ngOnInit() {
   	this.tasks = [];
   	this.getTasks();

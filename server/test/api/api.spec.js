@@ -9,7 +9,7 @@ const TaskSchema = require('../../db/models/task');
 chai.use(chaiHttp);
 
 describe('API: Task', () => {    
-  it('Fetch tasks', (done) => {
+    it('Fetch tasks', (done) => {
       chai.request(server)
           .get('/api/tasks')
           .end((err, res) => { 
@@ -66,6 +66,59 @@ describe('API: Task', () => {
                   res.body.should.be.a('object');
                   res.body.should.have.property('success').which.is.eql(true);
                   res.body.should.have.property('finished_date').which.is.not.empty;
+                  done();
+                });
+      });
+    });
+
+    describe('Edit title of task', () => {
+      let taskToEdit = '';
+      beforeEach(async () => {
+        taskToEdit = new TaskSchema({ title: 'Task 1' });
+        await taskToEdit.save();
+      });
+      it('Should edit title of task successfully', (done) => {
+        let params = { id: taskToEdit.id, title: 'Task 1 - edited' };
+        chai.request(server)
+                .post('/api/task/edit')
+                .send(params)
+                .end((err, res) => { 
+                  res.should.have.status(200);
+                  res.body.should.be.a('object');
+                  res.body.should.have.property('success').which.is.eql(true);
+                  done();
+                });
+      });
+
+      it('Should fail if title is empty', (done) => {
+        let params = { id: taskToEdit.id, title: '' };
+        chai.request(server)
+                .post('/api/task/edit')
+                .send(params)
+                .end((err, res) => { 
+                  res.should.have.status(200);
+                  res.body.should.be.a('object');
+                  res.body.should.have.property('success').which.is.eql(false);
+                  done();
+                });
+      });
+    });
+
+    describe('Remove task', () => {
+      let taskToRemove = '';
+      beforeEach(async () => {
+        taskToRemove = new TaskSchema({ title: 'Task to remove' });
+        await taskToRemove.save();
+      });
+      it('Should remove task', (done) => {
+        let params = { id: taskToRemove.id };
+        chai.request(server)
+                .post('/api/task/remove')
+                .send(params)
+                .end((err, res) => { 
+                  res.should.have.status(200);
+                  res.body.should.be.a('object');
+                  res.body.should.have.property('success').which.is.eql(true);
                   done();
                 });
       });

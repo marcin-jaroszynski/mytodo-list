@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Task } from '../task';
 import { TaskService } from '../task.service';
+import { Task } from '../task';
 
 @Component({
   selector: 'app-task',
@@ -9,23 +9,38 @@ import { TaskService } from '../task.service';
 })
 
 export class TaskComponent implements OnInit {
-  @Output() event = new EventEmitter();
+  @Output() eventFinished = new EventEmitter();
+  @Output() eventRemove = new EventEmitter();
   @Input() task: Task;
   mode: string;
 
   constructor(private taskService: TaskService) { }
 
   markTaskAsFinished() {
-    this.event.emit(this.task.id);
+    this.eventFinished.emit(this.task.id);
   }
+
+  removeTask() {
+    this.eventRemove.emit(this.task.id);
+  }
+
   editMode(): void {
     this.mode = 'edit';
   }
 
-  edit(newTitle): void {
+  edit(newTitle: string): void {
+    newTitle = newTitle.trim();
+    if (!newTitle) {
+      alert('Title of task cannot be empty!');
+      return;
+    }
     console.log('New Title: ', newTitle);
     this.task.title = newTitle;
-    this.mode = "read";
+    this.taskService.editTask(this.task).subscribe(response => { 
+      if (true === response['success']) {
+        this.mode = 'read';
+      }
+    });
   }
 
   isReadMode(): boolean {

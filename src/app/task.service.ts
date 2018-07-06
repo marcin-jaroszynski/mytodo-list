@@ -20,11 +20,19 @@ export class TaskService {
   	return this.http.get('/api/tasks');
   }
 
-  addTask(title) {
+  addTask(title: string) {
   	return this.http.post('/api/task/add', { title: title }, httpOptions);
   }
 
-  markAsFinished(id) {
+  markAsFinished(id: string) {
     return this.http.post('/api/task/finished', { id: id }, httpOptions);
+  }
+
+  editTask(task: Task) {
+    return this.http.post('/api/task/edit', { id: task.id, title: task.title }, httpOptions);
+  }
+
+  removeTask(id: string) {
+    return this.http.post('/api/task/remove', { id: id }, httpOptions);
   }
 }
