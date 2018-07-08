@@ -4,7 +4,7 @@
 	<div *ngIf="!isReadMode()" class="task__title-input"><input #taskTitle (keyup.enter)="edit(taskTitle.value)" type="text" value="{{task.title}}" /></div>
 	<div>
 	<button [hidden]="task.isFinished()" class="button" (click)="markTaskAsFinished()">Done</button>
-	<button class="button" (click)="removeTask()">Remove</button>
+	<button class="button" (click)="openDialog()">Remove</button>
 	</div>
 	<div [hidden]="!task.isFinished()" class="task__done-date">
 	Done at: {{task.date_finished}}

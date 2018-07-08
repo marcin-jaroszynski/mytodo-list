@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MatDialog, MatDialogConfig } from "@angular/material";
 import { TaskService } from '../task.service';
 import { Task } from '../task';
+import { PopupRemoveTaskComponent } from '../popup-remove-task/popup-remove-task.component';
 
 @Component({
   selector: 'app-task',
@@ -14,7 +16,7 @@ export class TaskComponent implements OnInit {
   @Input() task: Task;
   mode: string;
 
-  constructor(private taskService: TaskService) { }
+  constructor(private taskService: TaskService,  private dialog: MatDialog) { }
 
   markTaskAsFinished() {
     this.eventFinished.emit(this.task.id);
@@ -49,6 +51,21 @@ export class TaskComponent implements OnInit {
 
   ngOnInit() {
   	this.mode = 'read';
+  }
+
+  openDialog() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      title: this.task.title
+    };
+    const dialogRef = this.dialog.open(PopupRemoveTaskComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(response => {
+      if ('yes' === response) {
+        this.removeTask();
+      }
+    });
   }
 
 }

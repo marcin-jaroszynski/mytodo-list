@@ -1,0 +1,10 @@
+<div>
+	<h2 mat-dialog-title>Remove task</h2>
+	<mat-dialog-content>
+		Do you really want to remove task: {{ title }} ?
+	</mat-dialog-content>
+	<mat-dialog-actions>
+		<button mat-raised-button class="mat-primary" (click)="remove()">Yes</button>
+		<button class="mat-raised-button" (click)="close()">No</button>
+	</mat-dialog-actions>
+</div>
