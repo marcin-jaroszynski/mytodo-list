@@ -3,8 +3,16 @@
   <div>
     <input [(ngModel)]="titleTask" (keyup.enter)="addTask()" type="text" class="task-input" placeholder="Type task and click Enter to add">
   </div>
+  <div>
+  	Filters:
+  	<select [(ngModel)]="typeTask">
+  		<option value="all">All</option>
+  		<option value="inprogress">Not finished</option>
+  		<option value="finished">Finished</option>
+  	</select>
+  </div>
   <ul class="tasks-list">
-    <li *ngFor="let task of tasks.slice().reverse()">
+    <li *ngFor="let task of tasks.slice().reverse() | filterTask: typeTask">
       <app-task [task]="task" (eventFinished)="markTaskAsFinished($event)" (eventRemove)="removeTask($event)"></app-task>
     </li>
   </ul>

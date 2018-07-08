@@ -10,13 +10,15 @@ import { AppComponent } from './app.component';
 import { TaskService } from './task.service';
 import { TaskComponent } from './task/task.component';
 import { PopupRemoveTaskComponent } from './popup-remove-task/popup-remove-task.component';
+import { FilterTaskPipe } from './filter-task.pipe';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     TaskComponent,
-    PopupRemoveTaskComponent
+    PopupRemoveTaskComponent,
+    FilterTaskPipe
   ],
   imports: [
     BrowserModule,

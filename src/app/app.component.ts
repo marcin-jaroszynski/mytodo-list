@@ -10,6 +10,7 @@ import { Task } from './task';
 export class AppComponent {
   title = 'app';
   tasks: Task[];
+  @Input() typeTask: string;
   @Input() titleTask: string;
 
   constructor(private taskService: TaskService) {}
@@ -77,6 +78,7 @@ export class AppComponent {
 
   ngOnInit() {
   	this.tasks = [];
+    this.typeTask = 'all';
   	this.getTasks();
   }
 }
