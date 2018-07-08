@@ -48,6 +48,19 @@ describe('API: Task', () => {
                   done();
                 });
       });
+
+      it('Should fail if title is contain only whitespaces', (done) => {
+          let params = { title: '   '};
+          chai.request(server)
+                .post('/api/task/add')
+                .send(params)
+                .end((err, res) => { 
+                  res.should.have.status(200);
+                  res.body.should.be.a('object');
+                  res.body.should.have.property('success').which.is.eql(false);
+                  done();
+                });
+      });
     });
 
     describe('Mark task as finished', () => {

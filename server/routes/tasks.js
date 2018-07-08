@@ -13,11 +13,12 @@ async function getTasks(req, res) {
 
 async function add(req, res) {
     let response = {success: false, task: null};
-    if (!req.body.title) {
+    let titleOfTask = req.body.title;
+    if (!titleOfTask || !titleOfTask.trim()) {
         return res.json(response);    
     }
     try {
-        let newTask = new TaskSchema({title: req.body.title});
+        let newTask = new TaskSchema({title: titleOfTask.trim()});
         newTask.save();
         response.task = newTask;
         response.success = true;

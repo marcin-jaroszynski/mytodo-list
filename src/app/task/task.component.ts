@@ -14,11 +14,18 @@ export class TaskComponent implements OnInit {
   @Output() eventFinished = new EventEmitter();
   @Output() eventRemove = new EventEmitter();
   @Input() task: Task;
+  @Input() taskTitle: string;
   mode: string;
 
   constructor(private taskService: TaskService,  private dialog: MatDialog) { }
 
   markTaskAsFinished() {
+    if (!this.taskTitle) {
+      this.taskTitle = this.task.title;
+      alert('You cant type empty title of task!');
+      return;
+    }
+    this.switchToReadMode(); 
     this.eventFinished.emit(this.task.id);
   }
 
@@ -30,8 +37,8 @@ export class TaskComponent implements OnInit {
     this.mode = 'edit';
   }
 
-  edit(newTitle: string): void {
-    newTitle = newTitle.trim();
+  edit(): void {
+    let newTitle = this.taskTitle.trim();
     if (!newTitle) {
       alert('Title of task cannot be empty!');
       return;
@@ -40,7 +47,7 @@ export class TaskComponent implements OnInit {
     this.task.title = newTitle;
     this.taskService.editTask(this.task).subscribe(response => { 
       if (true === response['success']) {
-        this.mode = 'read';
+        this.switchToReadMode();
       }
     });
   }
@@ -50,7 +57,12 @@ export class TaskComponent implements OnInit {
   }
 
   ngOnInit() {
-  	this.mode = 'read';
+  	this.switchToReadMode();
+    this.taskTitle = this.task.title;
+  }
+
+  switchToReadMode() {
+    this.mode = 'read';
   }
 
   openDialog() {

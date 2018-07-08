@@ -33,20 +33,23 @@ export class AppComponent {
   }
 
   addTask(): void {
-  	if (this.titleTask) {
-  		this.taskService.addTask(this.titleTask).subscribe(response => {
-  			if (true === response['success']) {
-  				let newTask = new Task.Builder()
-		  							  .setId(response['task']._id)
-		  							  .setTitle(response['task'].title)
-		  							  .setStatus(response['task'].status)
-		  							  .setDateCreated(response['task'].created_date)
-		  							  .build();
-		  		this.tasks.push(newTask);
-		  		this.titleTask = '';
-  			}
-  		});
-  	}
+  	if (!this.titleTask.trim()) {
+      alert('Title of task cannot be empty!');
+      this.titleTask = '';
+      return;
+    }
+		this.taskService.addTask(this.titleTask.trim()).subscribe(response => {
+			if (true === response['success']) {
+				let newTask = new Task.Builder()
+	  							  .setId(response['task']._id)
+	  							  .setTitle(response['task'].title)
+	  							  .setStatus(response['task'].status)
+	  							  .setDateCreated(response['task'].created_date)
+	  							  .build();
+	  		this.tasks.push(newTask);
+	  		this.titleTask = '';
+			}
+		});
   }
 
   markTaskAsFinished(id: string): void {
