@@ -1,10 +1,14 @@
 const express = require('express');
-const app = express(); 
+const app = express();
 const bodyParser = require('body-parser');
 const config = require('config');
-const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
 const taskRoutes = require('./routes/tasks');
+const jwt = require('jsonwebtoken');
+const setup = require('./setup');
+const TokenModel = require('./db/models/token');
+
+
+setup();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -16,26 +20,31 @@ app.use(function(req, res, next) {
   next();
 });
 
-async function dbConnect() {
-	try {
-	    await mongoose.connect(config.get('DB_HOST'), config.get('DB_OPTIONS'));
-	} catch(error) {
-		console.log(errorLog('UNABLE TO CONNECT WITH MONGODB!'));
-	    console.log(errorLog('ERROR: ' + error));
-	    process.exit(0);
-	}
-}
+let authCheck = async (req, res, next) => {
+  let response = { success: false };
+  let token = req.body.token || req.query.token || req.headers['x-access-token'];
+  if (token) {
+    try {
+      let secret = await TokenModel.getSecret();
+      req.decoded = await jwt.verify(token, secret);
+      next();
+    } catch(error) {
+      res.json(response);
+    }
+  } else {
+    res.json(response);
+  }
+};
 
-dbConnect();
+app.get('/api/tasks', authCheck, taskRoutes.getTasks);
+app.post('/api/task/add', authCheck, taskRoutes.add);
+app.post('/api/task/finished', authCheck, taskRoutes.finished);
+app.post('/api/task/edit', authCheck, taskRoutes.edit);
+app.post('/api/task/remove', authCheck, taskRoutes.remove);
 
-app.get('/api/tasks', taskRoutes.getTasks);
-app.post('/api/task/add', taskRoutes.add);
-app.post('/api/task/finished', taskRoutes.finished);
-app.post('/api/task/edit', taskRoutes.edit);
-app.post('/api/task/remove', taskRoutes.remove);
 
 app.listen(config.get('PORT'), function() {
-	console.log('API MYTODO-LIST server listening on port: ' + config.get('PORT'));
+  console.log('API MYTODO-LIST server listening on port: ' + config.get('PORT'));
 });
 
 module.exports = app;
