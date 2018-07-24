@@ -1,0 +1,11 @@
+.task-input {
+  width: 100%;
+  border: 1px solid black;
+  padding: .5em;
+  box-sizing: border-box;
+  margin: 2em 0;
+}
+
+.tasks-list {
+  list-style-type: none;
+}
