@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken');
 
 const Schema = mongoose.Schema;
 
@@ -21,6 +22,15 @@ configSchema.static('getSecret', async function() {
     secret = data.secret;
   }
   return secret;
+});
+
+configSchema.static('getToken', async function(login, password) {
+  let secret = await this.getSecret();
+  const payload = {
+    login: login,
+    password: password
+  };
+  return jwt.sign(payload, secret, { expiresIn: 60*60*24 });
 });
 
 module.exports = mongoose.model('token', configSchema);

@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const config = require('config');
 const taskRoutes = require('./routes/tasks');
+const loginRoutes = require('./routes/login');
 const jwt = require('jsonwebtoken');
 const setup = require('./setup');
 const TokenModel = require('./db/models/token');
@@ -29,6 +30,7 @@ let authCheck = async (req, res, next) => {
       req.decoded = await jwt.verify(token, secret);
       next();
     } catch(error) {
+      console.log('AuthCheck.error: ', error);
       res.json(response);
     }
   } else {
@@ -36,6 +38,7 @@ let authCheck = async (req, res, next) => {
   }
 };
 
+app.get('/api/login', loginRoutes.login);
 app.get('/api/tasks', authCheck, taskRoutes.getTasks);
 app.post('/api/task/add', authCheck, taskRoutes.add);
 app.post('/api/task/finished', authCheck, taskRoutes.finished);

@@ -1,9 +1,10 @@
 <article>
   <h2>Login page</h2>
-
-  <input type="text" name="login">
-  <br>
-  <input type="password" name="password">
-  <br>
-  <button>Log in</button>
+  <form (keyup.enter)="login()">
+    <input [(ngModel)]="loginInput" type="text" name="login" class="input">
+    <br>
+    <input [(ngModel)]="passwordInput" type="password" name="password" class="input">
+    <br>
+  </form>
+  <button (click)="login()" class="button">Log in</button>
 </article>

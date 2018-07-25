@@ -6,6 +6,7 @@ import { MatDialogModule } from '@angular/material';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { CookieService } from 'ngx-cookie-service';
 
 import { AppComponent } from './app.component';
 import { TaskService } from './task.service';
@@ -15,6 +16,7 @@ import { FilterTaskPipe } from './filter-task.pipe';
 import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { LoginService } from './login.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     BrowserAnimationsModule,
     AppRoutingModule
   ],
-  providers: [TaskService],
+  providers: [TaskService, LoginService, CookieService],
   bootstrap: [AppComponent],
   entryComponents: [PopupRemoveTaskComponent]
 })
