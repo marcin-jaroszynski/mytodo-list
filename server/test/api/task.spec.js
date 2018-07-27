@@ -15,6 +15,10 @@ describe('API: Task', () => {
       token = await DbHelper.generateToken();
     });
 
+    afterEach(async () => {
+      await DbHelper.clear();
+    });
+
     let getRequestParams = (params) => {
       return Object.assign({ token: token }, params);
     };

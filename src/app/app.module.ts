@@ -17,6 +17,7 @@ import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginService } from './login.service';
+import { MessageService } from './message.service';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ import { LoginService } from './login.service';
     BrowserAnimationsModule,
     AppRoutingModule
   ],
-  providers: [TaskService, LoginService, CookieService],
+  providers: [TaskService, LoginService, CookieService, MessageService],
   bootstrap: [AppComponent],
   entryComponents: [PopupRemoveTaskComponent]
 })

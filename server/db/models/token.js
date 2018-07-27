@@ -17,20 +17,10 @@ configSchema.static('setup', async function() {
 
 configSchema.static('getSecret', async function() {
   let data = await this.findOne({});
-  let secret = '';
-  if (data) {
-    secret = data.secret;
+  if (!data) {
+    return '';
   }
-  return secret;
-});
-
-configSchema.static('getToken', async function(login, password) {
-  let secret = await this.getSecret();
-  const payload = {
-    login: login,
-    password: password
-  };
-  return jwt.sign(payload, secret, { expiresIn: 60*60*24 });
+  return data.secret;
 });
 
 module.exports = mongoose.model('token', configSchema);

@@ -1,13 +1,16 @@
-const TokenModel = require('../db/models/token');
+const UserModel = require('../db/models/user');
 
 async function login(req, res) {
   const response = { success: false, token: '', message: '' };
-  if (req.query.login && req.query.password) {
-    response.success = true;
-    response.token = await TokenModel.getToken();
-  //  console.log('DB.MODEL.LOGIN.login.response: ', response);
+  if (req.body.login && req.body.password) {
+    if (await UserModel.validateCreditentials(req.body.login, req.body.password)) {
+      response.success = true;
+      response.token = await UserModel.getToken(req.body.login);
+    } else {
+      res.status(401);
+      response.message = 'Login or password are not valid';
+    }
   }
-//  console.log('DB.MODEL.LOGIN.login.response(2): ', response);
   return res.json(response);
 }
 

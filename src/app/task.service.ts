@@ -27,23 +27,23 @@ export class TaskService {
   }
 
   addTask(title: string) {
-    this.params.title = title;
+    this.params['title'] = title;
     return this.http.post('/api/task/add', this.params, httpOptions);
   }
 
   markAsFinished(id: string) {
-    this.params.id = id;
+    this.params['id'] = id;
     return this.http.post('/api/task/finished', this.params, httpOptions);
   }
 
   editTask(task: Task) {
-    this.params.id = task.id;
-    this.params.title = task.title;
+    this.params['id'] = task.id;
+    this.params['title'] = task.title;
     return this.http.post('/api/task/edit', this.params, httpOptions);
   }
 
   removeTask(id: string) {
-    this.params.id = id;
+    this.params['id'] = id;
     return this.http.post('/api/task/remove', this.params, httpOptions);
   }
 }
