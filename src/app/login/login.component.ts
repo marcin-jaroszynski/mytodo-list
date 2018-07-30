@@ -31,13 +31,19 @@ export class LoginComponent implements OnInit {
       if (true === response['success']) {
         if (response['token']) {
           this.cookieService.set('token', response['token'], 7);
+          this.cookieService.set('login', loginCreditentials.login, 7);
           this.router.navigateByUrl('/dashboard');
         }
       }
     });
   }
+  _checkIsUserLogged() {
+    const token = this.cookieService.get('token');
+    console.log('LoginComponent._checkIsUserLogged.token: ', token);
+  }
 
   ngOnInit() {
+    this._checkIsUserLogged();
   }
 
 }
