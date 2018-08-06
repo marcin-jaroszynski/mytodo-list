@@ -8,6 +8,8 @@ const configSchema = new Schema({
   secret: { type: String, required: true }
 });
 
+const ONE_DAY = 86400;
+
 configSchema.static('setup', async function() {
   await this.remove({});
   let secret = crypto.randomBytes(32).toString('hex');
@@ -21,6 +23,12 @@ configSchema.static('getSecret', async function() {
     return '';
   }
   return data.secret;
+});
+
+configSchema.static('generate', async function(payload) {
+  let secret = await this.getSecret();
+  return jwt.sign(payload, secret, { expiresIn: ONE_DAY });
+
 });
 
 module.exports = mongoose.model('token', configSchema);

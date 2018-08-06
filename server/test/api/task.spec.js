@@ -23,59 +23,39 @@ describe('API: Task', () => {
       return Object.assign({ token: token }, params);
     };
 
-    it('Fetch tasks', (done) => {
+    it('Fetch tasks', async () => {
       let params = getRequestParams();
-      chai.request(server)
-          .get('/api/tasks')
-          .query(params)
-          .end((err, res) => {
-            res.should.have.status(200);
-            res.body.should.be.a('object');
-            res.body.should.have.property('success').which.is.eql(true);
-            res.body.should.have.property('tasks').which.is.instanceof(Array);
-            done();
-          });
+      const response = await chai.request(server).get('/api/tasks').query(params);
+      response.should.have.status(200);
+      response.body.should.be.a('object');
+      response.body.should.have.property('success').which.is.eql(true);
+      response.body.should.have.property('tasks').which.is.instanceof(Array);
     });
 
-    describe('Add Task', () => {
-      it('Should add task', (done) => {
+    describe('Add Task',  () => {
+      it('Should add task',  async () => {
         let params = getRequestParams({ title: 'New Task' });
-          chai.request(server)
-              .post('/api/task/add')
-              .send(params)
-              .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.be.a('object');
-                res.body.should.have.property('success').which.is.eql(true);
-                res.body.should.have.property('task').which.is.not.empty;
-                done();
-              });
+        const response = await chai.request(server).post('/api/task/add').send(params);
+        response.should.have.status(200);
+        response.body.should.be.a('object');
+        response.body.should.have.property('success').which.is.eql(true);
+        response.body.should.have.property('task').which.is.not.empty;
       });
 
-      it('Should fail if title is not send', (done) => {
-          let params = getRequestParams();
-          chai.request(server)
-                .post('/api/task/add')
-                .send(params)
-                .end((err, res) => {
-                  res.should.have.status(200);
-                  res.body.should.be.a('object');
-                  res.body.should.have.property('success').which.is.eql(false);
-                  done();
-                });
+      it('Should fail if title is not send', async () => {
+        let params = getRequestParams();
+        const response = await chai.request(server).post('/api/task/add').send(params);
+        response.should.have.status(200);
+        response.body.should.be.a('object');
+        response.body.should.have.property('success').which.is.eql(false);
       });
 
-      it('Should fail if title is contain only whitespaces', (done) => {
-          let params = getRequestParams({ title: '   '});
-          chai.request(server)
-                .post('/api/task/add')
-                .send(params)
-                .end((err, res) => {
-                  res.should.have.status(200);
-                  res.body.should.be.a('object');
-                  res.body.should.have.property('success').which.is.eql(false);
-                  done();
-                });
+      it('Should fail if title is contain only whitespaces', async () => {
+        let params = getRequestParams({ title: '   '});
+        const response = await chai.request(server).post('/api/task/add').send(params);
+        response.should.have.status(200);
+        response.body.should.be.a('object');
+        response.body.should.have.property('success').which.is.eql(false);
       });
     });
 
@@ -85,18 +65,13 @@ describe('API: Task', () => {
         addedTask = new TaskSchema({ title: 'Task 1' });
         await addedTask.save();
       });
-      it('Should mark task as finished', (done) => {
+      it('Should mark task as finished', async () => {
         let params = getRequestParams({ id: addedTask.id });
-        chai.request(server)
-                .post('/api/task/finished')
-                .send(params)
-                .end((err, res) => {
-                  res.should.have.status(200);
-                  res.body.should.be.a('object');
-                  res.body.should.have.property('success').which.is.eql(true);
-                  res.body.should.have.property('finished_date').which.is.not.empty;
-                  done();
-                });
+        const response = await chai.request(server).post('/api/task/finished').send(params);
+        response.should.have.status(200);
+        response.body.should.be.a('object');
+        response.body.should.have.property('success').which.is.eql(true);
+        response.body.should.have.property('finished_date').which.is.not.empty;
       });
     });
 
@@ -106,30 +81,20 @@ describe('API: Task', () => {
         taskToEdit = new TaskSchema({ title: 'Task 1' });
         await taskToEdit.save();
       });
-      it('Should edit title of task successfully', (done) => {
+      it('Should edit title of task successfully', async () => {
         let params = getRequestParams({ id: taskToEdit.id, title: 'Task 1 - edited' });
-        chai.request(server)
-                .post('/api/task/edit')
-                .send(params)
-                .end((err, res) => {
-                  res.should.have.status(200);
-                  res.body.should.be.a('object');
-                  res.body.should.have.property('success').which.is.eql(true);
-                  done();
-                });
+        const response = await chai.request(server).post('/api/task/edit').send(params);
+        response.should.have.status(200);
+        response.body.should.be.a('object');
+        response.body.should.have.property('success').which.is.eql(true);
       });
 
-      it('Should fail if title is empty', (done) => {
+      it('Should fail if title is empty', async () => {
         let params = getRequestParams({ id: taskToEdit.id, title: '' });
-        chai.request(server)
-                .post('/api/task/edit')
-                .send(params)
-                .end((err, res) => {
-                  res.should.have.status(200);
-                  res.body.should.be.a('object');
-                  res.body.should.have.property('success').which.is.eql(false);
-                  done();
-                });
+        const response = await chai.request(server).post('/api/task/edit').send(params);
+        response.should.have.status(200);
+        response.body.should.be.a('object');
+        response.body.should.have.property('success').which.is.eql(false);
       });
     });
 
@@ -139,17 +104,12 @@ describe('API: Task', () => {
         taskToRemove = new TaskSchema({ title: 'Task to remove' });
         await taskToRemove.save();
       });
-      it('Should remove task', (done) => {
+      it('Should remove task', async () => {
         let params = getRequestParams({ id: taskToRemove.id });
-        chai.request(server)
-                .post('/api/task/remove')
-                .send(params)
-                .end((err, res) => {
-                  res.should.have.status(200);
-                  res.body.should.be.a('object');
-                  res.body.should.have.property('success').which.is.eql(true);
-                  done();
-                });
+        const response = await chai.request(server).post('/api/task/remove').send(params)
+        response.should.have.status(200);
+        response.body.should.be.a('object');
+        response.body.should.have.property('success').which.is.eql(true);
       });
     });
 });

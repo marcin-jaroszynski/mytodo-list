@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const Token = require('./token');
 
 const Schema = mongoose.Schema;
@@ -31,13 +30,12 @@ userSchema.static('getToken', async function(login) {
   if (!user) {
     return '';
   }
-  let secret = await Token.getSecret();
   const payload = {
     login: user.login,
     password: user.password
   };
-  const ONE_DAY = 86400;
-  return jwt.sign(payload, secret, { expiresIn: ONE_DAY });
+  let token = await Token.generate(payload);
+  return token;
 });
 
 module.exports = mongoose.model('user', userSchema);
