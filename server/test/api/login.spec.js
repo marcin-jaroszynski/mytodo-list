@@ -82,13 +82,45 @@ describe('API: Login', () => {
 
 
 
-  it('POST: Autologin: after send proper data should accept to autologin', async () => {
-    let token = await UserModel.getToken(user.login);
-    const params = { token: token, login: user.login };
-    const response = await chai.request(server).post('/api/autologin').send(params);
-    response.should.have.status(200);
-    response.body.should.be.a('object');
-    response.body.should.have.property('success').which.is.eql(true);
+  describe('Autologin', () => {
+    it('POST: After send proper data should accept to autologin', async () => {
+      let token = await UserModel.getToken(user.login);
+      const params = { token: token, login: user.login };
+      const response = await chai.request(server).post('/api/autologin').send(params);
+      response.should.have.status(200);
+      response.body.should.be.a('object');
+      response.body.should.have.property('success').which.is.eql(true);
+    });
+
+    it('POST: For invalid token for exist user should reject', async () => {
+      let error = null;
+      let response = null;
+      try {
+        const params = {token: 'not-exist-token', login: user.login};
+        response = await chai.request(server).post('/api/autologin').send(params);
+      } catch (e) {
+        error = e.response;
+      }
+      should.not.exist(response, 'Response should be empty because there is 401 error code');
+      error.should.have.status(401, 'HTTP error code');
+      error.body.should.be.a('object');
+      error.body.should.have.property('success').which.is.eql(false);
+    });
+
+    it('POST: For not exist user should reject', async () => {
+      let error = null;
+      let response = null;
+      try {
+        const params = {token: 'not-exist-token', login: 'not-exist-user'};
+        response = await chai.request(server).post('/api/autologin').send(params);
+      } catch (e) {
+        error = e.response;
+      }
+      should.not.exist(response, 'Response should be empty because there is 401 error code');
+      error.should.have.status(401, 'HTTP error code');
+      error.body.should.be.a('object');
+      error.body.should.have.property('success').which.is.eql(false);
+    });
   });
 
 });

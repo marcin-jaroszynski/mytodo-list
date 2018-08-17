@@ -14,4 +14,19 @@ async function login(req, res) {
   return res.json(response);
 }
 
-module.exports = { login };
+async function autologin(req, res) {
+  const response = { success: false };
+  res.status(401);
+  if (!req.body.login || !req.body.token) {
+    return res.json(response);
+  }
+  let token = await UserModel.getToken(req.body.login);
+  if (token !== req.body.token) {
+    return res.json(response);
+  }
+  response.success = true;
+  res.status(200);
+  return res.json(response);
+}
+
+module.exports = { login, autologin };

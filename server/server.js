@@ -39,6 +39,7 @@ let authCheck = async (req, res, next) => {
 };
 
 app.post('/api/login', loginRoutes.login);
+app.post('/api/autologin', loginRoutes.autologin);
 app.get('/api/tasks', authCheck, taskRoutes.getTasks);
 app.post('/api/task/add', authCheck, taskRoutes.add);
 app.post('/api/task/finished', authCheck, taskRoutes.finished);
