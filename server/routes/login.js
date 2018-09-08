@@ -1,4 +1,5 @@
 const UserModel = require('../db/models/user');
+const TokenModel = require('../db/models/token');
 
 async function login(req, res) {
   const response = { success: false, token: '', message: '' };
@@ -20,12 +21,12 @@ async function autologin(req, res) {
   if (!req.body.login || !req.body.token) {
     return res.json(response);
   }
-  let token = await UserModel.getToken(req.body.login);
-  if (token !== req.body.token) {
-    return res.json(response);
+  try {
+    await TokenModel.verify(req.body.token);
+    response.success = true;
+    res.status(200);
+  } catch(e) {
   }
-  response.success = true;
-  res.status(200);
   return res.json(response);
 }
 

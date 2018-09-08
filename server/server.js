@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 const config = require('config');
 const taskRoutes = require('./routes/tasks');
 const loginRoutes = require('./routes/login');
-const jwt = require('jsonwebtoken');
 const setup = require('./setup');
 const TokenModel = require('./db/models/token');
 
@@ -26,8 +25,7 @@ let authCheck = async (req, res, next) => {
   let token = req.body.token || req.query.token || req.headers['x-access-token'];
   if (token) {
     try {
-      let secret = await TokenModel.getSecret();
-      req.decoded = await jwt.verify(token, secret);
+      req.decoded = await TokenModel.verify(token);
       next();
     } catch(error) {
       console.log('AuthCheck.error: ', error);

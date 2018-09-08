@@ -31,4 +31,9 @@ configSchema.static('generate', async function(payload) {
 
 });
 
+configSchema.static('verify', async function(token) {
+  const secret = await this.getSecret();
+  return await jwt.verify(token, secret);
+});
+
 module.exports = mongoose.model('token', configSchema);

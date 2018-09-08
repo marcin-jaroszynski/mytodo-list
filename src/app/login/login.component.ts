@@ -2,8 +2,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { LoginService } from '../login.service';
+import { AuthService } from '../auth.service';
 import { LoginCreditentials } from '../login-creditentials';
-
+import { AuthCreditentials } from '../auth-creditentials';
 
 @Component({
   selector: 'app-login',
@@ -14,8 +15,9 @@ export class LoginComponent implements OnInit {
   @Input() loginInput: string = '';
   @Input() passwordInput: string = '';
 
-  constructor(private loginSerivce: LoginService,
+  constructor(private loginService: LoginService,
               private cookieService: CookieService,
+              private authService: AuthService,
               private router: Router) { }
 
   login(): void {
@@ -27,19 +29,26 @@ export class LoginComponent implements OnInit {
       alert('Fill all fields!');
       return;
     }
-    this.loginSerivce.login(loginCreditentials).subscribe( response => {
+    this.loginService.login(loginCreditentials).subscribe( response => {
       if (true === response['success']) {
         if (response['token']) {
-          this.cookieService.set('token', response['token'], 7);
-          this.cookieService.set('login', loginCreditentials.login, 7);
+          const authCreditentials = new AuthCreditentials();
+          authCreditentials.login = loginCreditentials.login;
+          authCreditentials.token = response['token'];
+          this.authService.setCreditentials(authCreditentials);
           this.router.navigateByUrl('/dashboard');
         }
       }
     });
   }
   _checkIsUserLogged() {
-    const token = this.cookieService.get('token');
-    console.log('LoginComponent._checkIsUserLogged.token: ', token);
+    if (this.authService.isAuthenticated()) {
+      this.loginService.autologin(this.authService.getCreditentials()).subscribe( response => {
+        if (true === response['success']) {
+          this.router.navigateByUrl('/dashboard');
+        }
+      });
+    }
   }
 
   ngOnInit() {

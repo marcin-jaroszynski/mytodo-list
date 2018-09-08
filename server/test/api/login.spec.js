@@ -101,6 +101,7 @@ describe('API: Login', () => {
       } catch (e) {
         error = e.response;
       }
+      // console.log('RESPONSE: ', response);
       should.not.exist(response, 'Response should be empty because there is 401 error code');
       error.should.have.status(401, 'HTTP error code');
       error.body.should.be.a('object');

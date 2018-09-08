@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { LoginCreditentials } from './login-creditentials';
+import { AuthCreditentials } from './auth-creditentials';
 import { MessageService } from './message.service';
 import {of} from 'rxjs/observable/of';
 
@@ -19,6 +20,11 @@ export class LoginService {
   login(data: LoginCreditentials) {
     const params = { login: data.login, password: data.password };
     return this.http.post('/api/login', params, httpOptions).pipe(catchError(this.handleError()));
+  }
+
+  autologin(data: AuthCreditentials) {
+    const params = { login: data.login, token: data.token };
+    return this.http.post('/api/autologin', params, httpOptions).pipe(catchError(this.handleError()));
   }
 
   private handleError () {
