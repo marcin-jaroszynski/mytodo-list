@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
+import { MatDialog } from "@angular/material";
 import { TaskService } from '../task.service';
 import {Task} from '../task';
+import { PopupAddTaskComponent } from '../popup-add-task/popup-add-task.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +14,7 @@ export class DashboardComponent implements OnInit {
   @Input() typeTask: string;
   @Input() titleTask: string;
 
-  constructor(private taskService: TaskService) {}
+  constructor(private taskService: TaskService,  private dialog: MatDialog) {}
 
   getTasks(): void {
     this.taskService.getList().subscribe((response) => {
@@ -76,6 +78,10 @@ export class DashboardComponent implements OnInit {
         }
       }
     });
+  }
+
+  openDialogAddTask(): void {
+    this.dialog.open(PopupAddTaskComponent);
   }
 
   ngOnInit() {

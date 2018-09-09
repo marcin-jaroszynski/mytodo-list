@@ -5,8 +5,10 @@ const TaskStatus = require('./taskStatus');
 const taskSchema = new Schema({
 	title: { type: String, required: true },
 	status: { type: String, default: () => { return TaskStatus.IN_PROGRESS }},
+	content: { type: String },
 	created_date: { type: Date, default: () => { return Date.now() }},
-	finished_date: { type: Date }
+	finished_date: { type: Date },
+	due_date: { type: Date }
 });
 
 taskSchema.static('tasks', async function() {

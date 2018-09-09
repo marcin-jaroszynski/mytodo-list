@@ -2,8 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material';
-import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule, MatInputModule, MatButtonModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CookieService } from 'ngx-cookie-service';
@@ -19,6 +18,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginService } from './login.service';
 import { MessageService } from './message.service';
 import { AuthService } from './auth.service';
+import { PopupAddTaskComponent } from './popup-add-task/popup-add-task.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +27,8 @@ import { AuthService } from './auth.service';
     PopupRemoveTaskComponent,
     FilterTaskPipe,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    PopupAddTaskComponent
   ],
   imports: [
     BrowserModule,
@@ -35,11 +36,12 @@ import { AuthService } from './auth.service';
     FormsModule,
     MatDialogModule,
     MatButtonModule,
+    MatInputModule,
     BrowserAnimationsModule,
     AppRoutingModule
   ],
   providers: [TaskService, LoginService, CookieService, MessageService, AuthService],
   bootstrap: [AppComponent],
-  entryComponents: [PopupRemoveTaskComponent]
+  entryComponents: [PopupRemoveTaskComponent, PopupAddTaskComponent]
 })
 export class AppModule { }
