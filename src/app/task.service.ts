@@ -26,8 +26,10 @@ export class TaskService {
     return this.http.get('/api/tasks', { params: this.params });
   }
 
-  addTask(title: string) {
-    this.params['title'] = title;
+  addTask(task: Task) {
+    this.params['title'] = task.title;
+    this.params['content'] = task.content;
+    this.params['date_due'] = task.date_due;
     return this.http.post('/api/task/add', this.params, httpOptions);
   }
 
@@ -39,6 +41,8 @@ export class TaskService {
   editTask(task: Task) {
     this.params['id'] = task.id;
     this.params['title'] = task.title;
+    this.params['content'] = task.content;
+    this.params['date_due'] = task.date_due;
     return this.http.post('/api/task/edit', this.params, httpOptions);
   }
 

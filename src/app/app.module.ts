@@ -1,8 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
-import { MatDialogModule, MatInputModule, MatButtonModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule, MatInputModule, MatButtonModule, MatDatepickerModule, MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CookieService } from 'ngx-cookie-service';
@@ -18,7 +18,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginService } from './login.service';
 import { MessageService } from './message.service';
 import { AuthService } from './auth.service';
-import { PopupAddTaskComponent } from './popup-add-task/popup-add-task.component';
+import { PopupModifyTaskComponent } from './popup-modify-task/popup-modify-task.component';
 
 @NgModule({
   declarations: [
@@ -28,20 +28,30 @@ import { PopupAddTaskComponent } from './popup-add-task/popup-add-task.component
     FilterTaskPipe,
     LoginComponent,
     DashboardComponent,
-    PopupAddTaskComponent
+    PopupModifyTaskComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     MatDialogModule,
     MatButtonModule,
+    MatDatepickerModule,
     MatInputModule,
+    MatNativeDateModule,
     BrowserAnimationsModule,
     AppRoutingModule
   ],
-  providers: [TaskService, LoginService, CookieService, MessageService, AuthService],
+  providers: [
+    TaskService, 
+    LoginService, 
+    CookieService, 
+    MessageService, 
+    AuthService,
+    {provide: MAT_DATE_LOCALE, useValue: 'pl-PL'},
+  ],
   bootstrap: [AppComponent],
-  entryComponents: [PopupRemoveTaskComponent, PopupAddTaskComponent]
+  entryComponents: [PopupRemoveTaskComponent, PopupModifyTaskComponent]
 })
 export class AppModule { }

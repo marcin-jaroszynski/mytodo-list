@@ -3,6 +3,7 @@
 	<div *ngIf="isReadMode()" class="task__message" (click)="editMode()">{{task.title}}</div>
 	<div *ngIf="!isReadMode()" class="task__title-input"><input [(ngModel)]="taskTitle" (keyup.enter)="edit()" type="text" value="{{task.title}}" /></div>
 	<div>
+	<button class="button" (click)="editTask()">Edit</button>
 	<button [hidden]="task.isFinished()" class="button" (click)="markTaskAsFinished()">Done</button>
 	<button class="button" (click)="openDialog()">Remove</button>
 	</div>

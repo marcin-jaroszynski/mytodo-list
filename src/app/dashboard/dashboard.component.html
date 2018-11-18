@@ -13,6 +13,6 @@
 </div>
 <ul class="tasks-list">
   <li *ngFor="let task of tasks.slice().reverse() | filterTask: typeTask">
-    <app-task [task]="task" (eventFinished)="markTaskAsFinished($event)" (eventRemove)="removeTask($event)"></app-task>
+    <app-task [task]="task" (eventEdit)="editTask($event)" (eventFinished)="markTaskAsFinished($event)" (eventRemove)="removeTask($event)"></app-task>
   </li>
 </ul>

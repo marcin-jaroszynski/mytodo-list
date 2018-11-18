@@ -13,6 +13,7 @@ import { PopupRemoveTaskComponent } from '../popup-remove-task/popup-remove-task
 export class TaskComponent implements OnInit {
   @Output() eventFinished = new EventEmitter();
   @Output() eventRemove = new EventEmitter();
+  @Output() eventEdit = new EventEmitter();
   @Input() task: Task;
   @Input() taskTitle: string;
   mode: string;
@@ -31,6 +32,10 @@ export class TaskComponent implements OnInit {
 
   removeTask() {
     this.eventRemove.emit(this.task.id);
+  }
+
+  editTask() {
+    this.eventEdit.emit(this.task.id);
   }
 
   editMode(): void {

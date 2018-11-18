@@ -17,8 +17,13 @@ async function add(req, res) {
     if (!titleOfTask || !titleOfTask.trim()) {
         return res.json(response);    
     }
+    const newTaskData = {
+        title: titleOfTask.trim(),
+        content: req.body.content,
+        due_date: req.body.date_due
+    };
     try {
-        let newTask = new TaskSchema({title: titleOfTask.trim()});
+        let newTask = new TaskSchema(newTaskData);
         newTask.save();
         response.task = newTask;
         response.success = true;

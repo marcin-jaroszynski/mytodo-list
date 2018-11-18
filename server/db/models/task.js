@@ -8,7 +8,7 @@ const taskSchema = new Schema({
 	content: { type: String },
 	created_date: { type: Date, default: () => { return Date.now() }},
 	finished_date: { type: Date },
-	due_date: { type: Date }
+	due_date: { type: Date, default: () => { return undefined }}
 });
 
 taskSchema.static('tasks', async function() {

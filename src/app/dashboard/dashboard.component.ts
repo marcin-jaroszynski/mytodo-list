@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import { MatDialog } from "@angular/material";
+import { MatDialog, MatDialogConfig } from "@angular/material";
 import { TaskService } from '../task.service';
-import {Task} from '../task';
-import { PopupAddTaskComponent } from '../popup-add-task/popup-add-task.component';
+import { Task } from '../task';
+import { PopupModifyTaskComponent } from '../popup-modify-task/popup-modify-task.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,32 +23,14 @@ export class DashboardComponent implements OnInit {
           const newTask = new Task.Builder()
             .setId(response['tasks'][i]._id)
             .setTitle(response['tasks'][i].title)
+            .setContent(response['tasks'][i].content)
             .setStatus(response['tasks'][i].status)
             .setDateCreated(response['tasks'][i].created_date)
             .setDateFinished(response['tasks'][i].finished_date)
+            .setDateDue(response['tasks'][i].due_date)
             .build();
           this.tasks.push(newTask);
         }
-      }
-    });
-  }
-
-  addTask(): void {
-    if (!this.titleTask.trim()) {
-      alert('Title of task cannot be empty!');
-      this.titleTask = '';
-      return;
-    }
-    this.taskService.addTask(this.titleTask.trim()).subscribe(response => {
-      if (true === response['success']) {
-        const newTask = new Task.Builder()
-          .setId(response['task']._id)
-          .setTitle(response['task'].title)
-          .setStatus(response['task'].status)
-          .setDateCreated(response['task'].created_date)
-          .build();
-        this.tasks.push(newTask);
-        this.titleTask = '';
       }
     });
   }
@@ -80,8 +62,27 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  editTask(id: string): void {
+    console.log('Dashboard.editTask.task.id: ', id);
+    for (let i = 0; i < this.tasks.length; i++) {
+      if (id === this.tasks[i].id) {
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.data = {
+          task: this.tasks[i]
+        };
+        dialogConfig.panelClass = 'my-modal-window'; 
+        this.dialog.open(PopupModifyTaskComponent, dialogConfig);
+      }
+    }
+  }
+
   openDialogAddTask(): void {
-    this.dialog.open(PopupAddTaskComponent);
+    const dialogRef = this.dialog.open(PopupModifyTaskComponent, {
+      panelClass: 'my-modal-window'
+    });
+    dialogRef.componentInstance.onAddTask.subscribe((newTask) => {
+      this.tasks.push(newTask);
+    });
   }
 
   ngOnInit() {

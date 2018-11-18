@@ -1,0 +1,26 @@
+<div class="modal-window">
+	<h2 mat-dialog-title>{{popupTitle}}</h2>
+	<mat-dialog-content>
+		<form [formGroup]="myform">
+			<mat-form-field class="full-width">
+				<input matInput placeholder="Title" formControlName="title">
+				<mat-error *ngIf="myform.controls.title.invalid">{{getInvalidTitleMessage()}}</mat-error>
+			</mat-form-field>
+			<br>
+			<mat-form-field class="full-width">
+				<input matInput [matDatepicker]="dueDatePicker" formControlName="dueDate" placeholder="Due date" (click)="dueDatePicker.open()">
+				<mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
+				<mat-datepicker #dueDatePicker></mat-datepicker>
+			</mat-form-field>
+			<br>
+			<mat-form-field class="full-width">
+				<textarea matInput formControlName="content" placeholder="Content"></textarea>
+			</mat-form-field>
+		</form>	
+	</mat-dialog-content>
+	<mat-dialog-actions>
+		<button *ngIf="!isEditMode; else editBtn" mat-raised-button color="primary" (click)="add()" [disabled]="!isFormValid()">Add</button>
+		<button mat-raised-button color="primary" (click)="edit()" [disabled]="!isFormValid()">Edit</button>
+		<button mat-raised-button color="warn" (click)="close()">Close</button>
+	</mat-dialog-actions>
+</div>

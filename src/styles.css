@@ -22,3 +22,8 @@
   padding: .5em;
   box-sizing: border-box;
 }
+
+.my-modal-window {
+  width: 35%;
+  height: 50%;
+}
