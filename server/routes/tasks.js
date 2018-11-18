@@ -58,7 +58,7 @@ async function edit(req, res) {
         return res.json(response);    
     }
     try {
-        await TaskSchema.findOneAndUpdate({_id: req.body.id}, {title: title});
+        await TaskSchema.findOneAndUpdate({_id: req.body.id}, {title: title, content: req.body.content, due_date: req.body.date_due});
         response.success = true;
         return res.json(response);
     } catch(error) {

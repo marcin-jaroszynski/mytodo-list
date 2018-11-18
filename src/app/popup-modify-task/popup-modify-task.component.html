@@ -19,8 +19,8 @@
 		</form>	
 	</mat-dialog-content>
 	<mat-dialog-actions>
-		<button *ngIf="!isEditMode; else editBtn" mat-raised-button color="primary" (click)="add()" [disabled]="!isFormValid()">Add</button>
-		<button mat-raised-button color="primary" (click)="edit()" [disabled]="!isFormValid()">Edit</button>
+		<button *ngIf="!isEditMode; else edit_btn" mat-raised-button color="primary" (click)="add()" [disabled]="!isFormValid()">Add</button>
+		<ng-template #edit_btn><button mat-raised-button color="primary" (click)="edit()" [disabled]="!isFormValid()">Edit</button></ng-template>
 		<button mat-raised-button color="warn" (click)="close()">Close</button>
 	</mat-dialog-actions>
 </div>

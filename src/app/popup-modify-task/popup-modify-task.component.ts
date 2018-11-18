@@ -15,6 +15,7 @@ export class PopupModifyTaskComponent implements OnInit {
   isEditMode: Boolean;
   popupTitle: String;
   onAddTask = new EventEmitter();
+  onEditTask = new EventEmitter();
 
   constructor(private dialogRef: MatDialogRef<PopupModifyTaskComponent>,  
               @Inject(MAT_DIALOG_DATA) data, 
@@ -44,7 +45,7 @@ export class PopupModifyTaskComponent implements OnInit {
   }
 
   add() {
-    this.taskService.addTask(this._getTaskToModify()).subscribe(response => {
+    this.taskService.addTask(this._getTaskToAdd()).subscribe(response => {
       if (true === response['success']) {
         const createdTask = new Task.Builder()
                .setId(response['task']._id)
@@ -54,7 +55,6 @@ export class PopupModifyTaskComponent implements OnInit {
                .setStatus(response['task'].status)
                .setDateCreated(response['task'].created_date)
                .build();
-        console.log('PopupModifyTaskComponent.add.task: ', createdTask);
         this.onAddTask.emit(createdTask);
         this.close();
       }
@@ -62,7 +62,15 @@ export class PopupModifyTaskComponent implements OnInit {
   }
 
   edit() {
-    
+    this.task.title = this.myform.controls.title.value;
+    this.task.content = this.myform.controls.content.value;
+    this.task.date_due = this.myform.controls.dueDate.value;
+    this.taskService.editTask(this.task).subscribe(response => {
+      if (true === response['success']) {
+        this.onEditTask.emit(this.task);
+      }
+      this.close();
+    });
   }
 
   close() {
@@ -81,11 +89,10 @@ export class PopupModifyTaskComponent implements OnInit {
     return !this.myform.controls.title.invalid;
   }
 
-  _getTaskToModify() {
-    return new Task.Builder()
-          .setTitle(this.myform.controls.title.value)
-          .setContent(this.myform.controls.content.value)
-          .setDateDue(this.myform.controls.dueDate.value)
-          .build();
+  _getTaskToAdd() {
+    return new Task.Builder().setTitle(this.myform.controls.title.value)
+               .setContent(this.myform.controls.content.value)
+               .setDateDue(this.myform.controls.dueDate.value)
+               .build();
   }
 }

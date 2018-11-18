@@ -63,17 +63,19 @@ export class DashboardComponent implements OnInit {
   }
 
   editTask(id: string): void {
-    console.log('Dashboard.editTask.task.id: ', id);
-    for (let i = 0; i < this.tasks.length; i++) {
-      if (id === this.tasks[i].id) {
-        const dialogConfig = new MatDialogConfig();
-        dialogConfig.data = {
-          task: this.tasks[i]
-        };
-        dialogConfig.panelClass = 'my-modal-window'; 
-        this.dialog.open(PopupModifyTaskComponent, dialogConfig);
+    const taskToUpdate: Task = this.tasks.find((task) => task.id === id);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {
+      task: taskToUpdate
+    };
+    dialogConfig.panelClass = 'my-modal-window'; 
+    const dialogRef = this.dialog.open(PopupModifyTaskComponent, dialogConfig);
+    dialogRef.componentInstance.onEditTask.subscribe((updatedTask) => {
+      const indexTaskToUpdate = this.tasks.findIndex((task) => task.id === id);
+      if (indexTaskToUpdate !== -1) {
+        this.tasks[indexTaskToUpdate] = updatedTask;
       }
-    }
+    });
   }
 
   openDialogAddTask(): void {
