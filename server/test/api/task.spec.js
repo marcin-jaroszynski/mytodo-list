@@ -112,4 +112,15 @@ describe('API: Task', () => {
         response.body.should.have.property('success').which.is.eql(true);
       });
     });
+
+    describe('Daily tasks', () => {
+      it('Should fetch tasks for today', async () => {
+        let params = getRequestParams();
+        const response = await chai.request(server).get('/api/tasks/daily').query(params);
+        response.should.have.status(200);
+        response.body.should.be.a('object');
+        response.body.should.have.property('success').which.is.eql(true);
+        response.body.should.have.property('tasks').which.is.instanceof(Array);
+      });
+    });
 });
