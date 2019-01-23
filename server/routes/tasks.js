@@ -80,4 +80,15 @@ async function remove(req, res) {
     }
 }
 
-module.exports = { getTasks, add, finished, edit, remove };
+async function getDailyTasks(req, res) {
+    let response = {success: false, tasks: []};
+    try {
+        response.tasks = await TaskSchema.dailyTasks();
+        response.success = true;
+        return res.json(response);
+    } catch(error) {
+        return res.json(response);
+    }
+}
+
+module.exports = { getTasks, add, finished, edit, remove, getDailyTasks };

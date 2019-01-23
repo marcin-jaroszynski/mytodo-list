@@ -5,6 +5,7 @@ const chaiHttp = require('chai-http');
 const should = chai.should();
 let server = require('../../server');
 const TaskSchema = require('../../db/models/task');
+const DateUtil = require('../../util/date');
 const DbHelper = require('../db/helper');
 
 chai.use(chaiHttp);
@@ -114,6 +115,16 @@ describe('API: Task', () => {
     });
 
     describe('Daily tasks', () => {
+      const dueDate = DateUtil.getCurrent();
+      const numOfAddedTask = 3;
+      beforeEach(async () => {
+        for (let i = 1; i <= numOfAddedTask; i++) {
+          let addedTask = new TaskSchema({ title: 'Task '+i, due_date: dueDate });
+          await addedTask.save();
+        }
+        let otherAddedTask = new TaskSchema({ title: 'Task X' });
+        await otherAddedTask.save();
+      });
       it('Should fetch tasks for today', async () => {
         let params = getRequestParams();
         const response = await chai.request(server).get('/api/tasks/daily').query(params);
@@ -121,6 +132,7 @@ describe('API: Task', () => {
         response.body.should.be.a('object');
         response.body.should.have.property('success').which.is.eql(true);
         response.body.should.have.property('tasks').which.is.instanceof(Array);
+        response.body.should.have.property('tasks').to.have.lengthOf(numOfAddedTask);
       });
     });
 });

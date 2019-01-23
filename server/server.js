@@ -7,7 +7,6 @@ const loginRoutes = require('./routes/login');
 const setup = require('./setup');
 const TokenModel = require('./db/models/token');
 
-
 setup();
 
 app.use(bodyParser.json());
@@ -39,6 +38,7 @@ let authCheck = async (req, res, next) => {
 app.post('/api/login', loginRoutes.login);
 app.post('/api/autologin', loginRoutes.autologin);
 app.get('/api/tasks', authCheck, taskRoutes.getTasks);
+app.get('/api/tasks/daily', authCheck, taskRoutes.getDailyTasks);
 app.post('/api/task/add', authCheck, taskRoutes.add);
 app.post('/api/task/finished', authCheck, taskRoutes.finished);
 app.post('/api/task/edit', authCheck, taskRoutes.edit);
