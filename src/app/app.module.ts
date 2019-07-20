@@ -19,6 +19,7 @@ import { LoginService } from './login.service';
 import { MessageService } from './message.service';
 import { AuthService } from './auth.service';
 import { PopupModifyTaskComponent } from './popup-modify-task/popup-modify-task.component';
+import { DueDatePipe } from './task/filters/due-date.pipe';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { PopupModifyTaskComponent } from './popup-modify-task/popup-modify-task.
     FilterTaskPipe,
     LoginComponent,
     DashboardComponent,
-    PopupModifyTaskComponent
+    PopupModifyTaskComponent,
+    DueDatePipe
   ],
   imports: [
     BrowserModule,

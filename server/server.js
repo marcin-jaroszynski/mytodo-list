@@ -27,7 +27,6 @@ let authCheck = async (req, res, next) => {
       req.decoded = await TokenModel.verify(token);
       next();
     } catch(error) {
-      console.log('AuthCheck.error: ', error);
       res.json(response);
     }
   } else {

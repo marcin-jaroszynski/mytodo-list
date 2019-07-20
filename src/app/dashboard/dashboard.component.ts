@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { MatDialog, MatDialogConfig } from "@angular/material";
+import { FormGroup, FormControl } from '@angular/forms';
 import { TaskService } from '../task.service';
 import { Task } from '../task';
 import { PopupModifyTaskComponent } from '../popup-modify-task/popup-modify-task.component';
@@ -13,6 +14,7 @@ export class DashboardComponent implements OnInit {
   tasks: Task[];
   @Input() typeTask: string;
   @Input() titleTask: string;
+  taskFilters: FormGroup
 
   constructor(private taskService: TaskService,  private dialog: MatDialog) {}
 
@@ -87,9 +89,16 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  resetDueDateFilter(): void {
+    this.taskFilters.controls.dueDate.setValue(undefined);
+  }
+
   ngOnInit() {
     this.tasks = [];
     this.typeTask = 'all';
+    this.taskFilters = new FormGroup({
+      dueDate: new FormControl()
+    });
     this.getTasks();
   }
 

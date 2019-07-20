@@ -51,7 +51,7 @@ export class PopupModifyTaskComponent implements OnInit {
                .setId(response['task']._id)
                .setTitle(response['task'].title)
                .setContent(response['task'].content)
-               .setDateDue(response['task'].dueDate)
+               .setDateDue(response['task'].due_date)
                .setStatus(response['task'].status)
                .setDateCreated(response['task'].created_date)
                .build();
@@ -64,7 +64,7 @@ export class PopupModifyTaskComponent implements OnInit {
   edit() {
     this.task.title = this.myform.controls.title.value;
     this.task.content = this.myform.controls.content.value;
-    this.task.date_due = this.myform.controls.dueDate.value;
+    this.task.date_due = this._getDueDate();
     this.taskService.editTask(this.task).subscribe(response => {
       if (true === response['success']) {
         this.onEditTask.emit(this.task);
@@ -85,6 +85,14 @@ export class PopupModifyTaskComponent implements OnInit {
   	return this._isTitleValid();
   }
 
+  _getDueDate() {
+    let dueDate = this.myform.controls.dueDate.value;
+    if (dueDate) {
+      return dueDate.toISOString();
+    }
+    return undefined;
+  }
+
   _isTitleValid() {
     return !this.myform.controls.title.invalid;
   }
@@ -92,7 +100,7 @@ export class PopupModifyTaskComponent implements OnInit {
   _getTaskToAdd() {
     return new Task.Builder().setTitle(this.myform.controls.title.value)
                .setContent(this.myform.controls.content.value)
-               .setDateDue(this.myform.controls.dueDate.value)
+               .setDateDue(this._getDueDate())
                .build();
   }
 }
