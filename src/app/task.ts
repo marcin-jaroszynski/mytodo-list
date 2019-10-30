@@ -58,7 +58,7 @@ export class Task {
       }
 
       setDateDue(dateDue) {
-        this.date_due = dateDue;
+        this.date_due = new Date(dateDue);
         return this;
       }
 

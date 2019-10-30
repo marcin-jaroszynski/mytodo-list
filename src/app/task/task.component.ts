@@ -26,7 +26,7 @@ export class TaskComponent implements OnInit {
       alert('You cant type empty title of task!');
       return;
     }
-    this.switchToReadMode(); 
+    this.switchToReadMode();
     this.eventFinished.emit(this.task.id);
   }
 
@@ -48,9 +48,8 @@ export class TaskComponent implements OnInit {
       alert('Title of task cannot be empty!');
       return;
     }
-    console.log('New Title: ', newTitle);
     this.task.title = newTitle;
-    this.taskService.editTask(this.task).subscribe(response => { 
+    this.taskService.editTask(this.task).subscribe(response => {
       if (true === response['success']) {
         this.switchToReadMode();
       }

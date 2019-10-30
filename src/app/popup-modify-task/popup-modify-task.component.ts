@@ -17,8 +17,8 @@ export class PopupModifyTaskComponent implements OnInit {
   onAddTask = new EventEmitter();
   onEditTask = new EventEmitter();
 
-  constructor(private dialogRef: MatDialogRef<PopupModifyTaskComponent>,  
-              @Inject(MAT_DIALOG_DATA) data, 
+  constructor(private dialogRef: MatDialogRef<PopupModifyTaskComponent>,
+              @Inject(MAT_DIALOG_DATA) data,
               private taskService: TaskService) {
     this.popupTitle = "Add task";
     this.isEditMode = false;
@@ -86,9 +86,9 @@ export class PopupModifyTaskComponent implements OnInit {
   }
 
   _getDueDate() {
-    let dueDate = this.myform.controls.dueDate.value;
+    const dueDate = this.myform.controls.dueDate.value;
     if (dueDate) {
-      return dueDate.toISOString();
+      return dueDate;
     }
     return undefined;
   }
