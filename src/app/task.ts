@@ -58,7 +58,7 @@ export class Task {
       }
 
       setDateDue(dateDue) {
-        this.date_due = new Date(dateDue);
+        this.date_due = dateDue ? new Date(dateDue) : undefined;
         return this;
       }
 

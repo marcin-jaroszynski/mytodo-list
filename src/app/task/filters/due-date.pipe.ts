@@ -11,7 +11,11 @@ export class DueDatePipe implements PipeTransform {
     if (!dueDate) {
     	return items;
     }
-    return items.filter(task => task.date_due.toISOString() === dueDate.toISOString());
+    return items.filter(task => {
+      if (task.date_due) {
+        return task.date_due.toISOString() === dueDate.toISOString();
+      }
+    });
   }
 
 }
