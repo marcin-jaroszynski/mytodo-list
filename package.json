@@ -31,7 +31,7 @@
     "commander": "^2.16.0",
     "core-js": "^2.4.1",
     "jsonwebtoken": "^8.2.0",
-    "moment": "^2.22.2",
+    "moment": "^2.29.4",
     "ngx-cookie-service": "^1.0.10",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"
